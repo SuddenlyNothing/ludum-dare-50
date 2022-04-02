@@ -4,6 +4,7 @@ extends StateMachine
 func _ready() -> void:
 	add_state("idle")
 	add_state("walk")
+	add_state("death")
 	call_deferred("set_state", "idle")
 
 
@@ -14,6 +15,8 @@ func _state_logic(delta : float) -> void:
 			pass
 		states.walk:
 			parent.move()
+		states.death:
+			pass
 
 # Return value will be used to change state.
 func _get_transition(delta : float):
@@ -24,6 +27,8 @@ func _get_transition(delta : float):
 		states.walk:
 			if parent.input == Vector2():
 				return states.idle
+		states.death:
+			pass
 	return null
 
 # Called on entering state.
@@ -35,6 +40,8 @@ func _enter_state(new_state : String, old_state) -> void:
 			pass
 		states.walk:
 			pass
+		states.death:
+			set_death(true)
 
 # Called on exiting state.
 # old_state is the state being exited.
@@ -45,3 +52,15 @@ func _exit_state(old_state, new_state : String) -> void:
 			pass
 		states.walk:
 			pass
+		states.death:
+			set_death(false)
+
+
+func set_death(is_dead: bool) -> void:
+	if is_dead:
+		parent.emit_signal("died")
+	parent.visible = not is_dead
+	parent.set_process(not is_dead)
+	set_physics_process(not is_dead)
+	parent.body_collision.call_deferred("set_disabled", is_dead)
+	parent.hitbox_collision.call_deferred("set_disabled", is_dead)
