@@ -1,0 +1,30 @@
+Environment Assets:
+Walls
+  Horizontal
+  Vertical
+  Connceting In
+  Conncecting Out?
+  Variation on paneling/wiring
+  Windows End L
+  Windows End R
+  Windows Mid
+
+Floor Tiles
+  Basic Tile Colour 1
+  Basic Tile colour 2 (just to mix it up a lil)
+  Grate Tile
+  Path / Glow Tile
+  Yellow Tape Tile
+  Glass Floor Tile
+
+Other Items
+  Desks
+  Generators
+  Crates
+  Fencing
+  Test Subject Tubes
+ 
+Sprite Items:
+  Respawn (hamster ball?)
+  Weapon for enemies? (melee)
+  The Button
