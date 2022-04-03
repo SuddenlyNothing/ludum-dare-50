@@ -4,14 +4,17 @@ const ACCELERATION : int = 300
 const MAX_SPEED : int = 150
 const PUSH_FORCE : int = 1000
 const ROTATE_SPEED : int = 10
+const ATTACK_DAMAGE : int = 5
 
 var velocity := Vector2()
 var targets := {}
 var target : Node
+var attack_targets := {}
 
 onready var soft_collision := $SoftCollision
 onready var update_target_timer := $UpdateTargetTimer
 onready var sprite := $Sprite
+onready var attack_timer := $AttackTimer
 
 
 func _physics_process(delta: float) -> void:
@@ -39,9 +42,12 @@ func set_target_to_closest() -> void:
 	target = min_target
 
 
+func attack() -> void:
+	for i in attack_targets:
+		i.hit(ATTACK_DAMAGE, position.direction_to(i.position))
+
+
 func _on_Vision_body_entered(body: Node) -> void:
-	if not body.is_in_group("hittable"):
-		return
 	if targets.empty():
 		update_target_timer.start()
 		targets[body] = 0
@@ -51,8 +57,6 @@ func _on_Vision_body_entered(body: Node) -> void:
 
 
 func _on_Vision_body_exited(body: Node) -> void:
-	if not body.is_in_group("hittable"):
-		return
 	targets.erase(body)
 	if targets.empty():
 		update_target_timer.stop()
@@ -64,4 +68,23 @@ func _on_UpdateTargetTimer_timeout() -> void:
 
 
 func _on_Hitbox_body_entered(body: Node) -> void:
-	pass # Replace with function body.
+	if not body.is_in_group("hittable"):
+		return
+	if attack_targets.empty():
+		attack_timer.start()
+		attack_targets[body] = 0
+		attack()
+	else:
+		attack_targets[body] = 0
+
+
+func _on_Hitbox_body_exited(body: Node) -> void:
+	if not body.is_in_group("hittable"):
+		return
+	attack_targets.erase(body)
+	if attack_targets.empty():
+		attack_timer.stop()
+
+
+func _on_AttackTimer_timeout() -> void:
+	attack()

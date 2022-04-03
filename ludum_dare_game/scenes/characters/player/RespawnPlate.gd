@@ -3,7 +3,8 @@ extends KinematicBody2D
 const MAX_DIST : int = 200
 const MAX_DIST_SQR : int = MAX_DIST * MAX_DIST
 const MAX_SPEED : int = 400
-const ACCELERATION : int = 1600
+const ACCELERATION : int = 1000
+const MAX_KNOCKBACK : int = 5000
 
 const Explosion := preload("res://scenes/characters/player/Explosion.tscn")
 
@@ -15,6 +16,7 @@ onready var player := $Player
 onready var line := $Line2D
 onready var death_timer := $DeathTimer
 onready var raycast := $RayCast2D
+onready var hud := $HUD
 
 
 func _ready() -> void:
@@ -37,6 +39,11 @@ func _physics_process(delta: float) -> void:
 		desired_velocity = MAX_SPEED * position.direction_to(player.position)
 	velocity = velocity.move_toward(desired_velocity, ACCELERATION * delta)
 	move_and_slide(velocity)
+
+
+func hit(dmg: float, dir: Vector2 = Vector2()) -> void:
+	velocity += dmg / 100 * MAX_KNOCKBACK * dir
+	hud.add_health(-dmg)
 
 
 func _set_line() -> void:
