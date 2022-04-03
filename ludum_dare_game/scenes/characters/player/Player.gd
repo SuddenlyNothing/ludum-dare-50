@@ -29,3 +29,7 @@ func _on_Hitbox_body_entered(body: Node) -> void:
 
 func respawn() -> void:
 	player_states.call_deferred("set_state", "idle")
+
+
+func hit() -> void:
+	print("got hit!")
