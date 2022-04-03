@@ -11,6 +11,7 @@ var potential_targets := {}
 var targets := {}
 var target : Node
 var attack_targets := {}
+var do_update_target := true
 
 onready var soft_collision := $SoftCollision
 onready var update_target_timer := $UpdateTargetTimer
@@ -21,13 +22,14 @@ onready var vision_cast := $VisionCast
 
 func _physics_process(delta: float) -> void:
 	var desired_velocity := Vector2()
-	if target:
+	if is_instance_valid(target):
 		desired_velocity = position.direction_to(target.position) * MAX_SPEED
 		set_facing(desired_velocity, delta)
 	velocity = velocity.move_toward(desired_velocity, ACCELERATION * delta)
 	velocity += PUSH_FORCE * delta * soft_collision.get_push_dir()
 	move_and_slide(velocity)
-	update_potential_targets()
+	if do_update_target:
+		update_potential_targets()
 
 
 func set_facing(dir: Vector2, delta: float) -> void:
