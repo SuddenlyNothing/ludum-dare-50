@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/enemy_footstep_1.wav-23b1976106aa9bb1e24f1676715de076.sample"
+
+[deps]
+
+source_file="res://assets/sfx/enemy_footstep_1.wav"
+dest_files=[ "res://.import/enemy_footstep_1.wav-23b1976106aa9bb1e24f1676715de076.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
