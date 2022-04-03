@@ -1,0 +1,8 @@
+Grid sizes:
+                   width x height
+ani_sprite_explode = 700 x 700px
+
+tileset_floor = 350 x 350px
+
+tileset_wall = 350 x 700px
+               175 x 700px (last two)
