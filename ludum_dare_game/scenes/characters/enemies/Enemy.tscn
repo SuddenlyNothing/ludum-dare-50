@@ -47,6 +47,8 @@ shape = SubResource( 3 )
 [node name="AttackTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="VisionCast" type="RayCast2D" parent="."]
+
 [connection signal="body_entered" from="Vision" to="." method="_on_Vision_body_entered"]
 [connection signal="body_exited" from="Vision" to="." method="_on_Vision_body_exited"]
 [connection signal="timeout" from="UpdateTargetTimer" to="." method="_on_UpdateTargetTimer_timeout"]

@@ -7,6 +7,7 @@ const ROTATE_SPEED : int = 10
 const ATTACK_DAMAGE : int = 5
 
 var velocity := Vector2()
+var potential_targets := {}
 var targets := {}
 var target : Node
 var attack_targets := {}
@@ -15,6 +16,7 @@ onready var soft_collision := $SoftCollision
 onready var update_target_timer := $UpdateTargetTimer
 onready var sprite := $Sprite
 onready var attack_timer := $AttackTimer
+onready var vision_cast := $VisionCast
 
 
 func _physics_process(delta: float) -> void:
@@ -25,10 +27,29 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.move_toward(desired_velocity, ACCELERATION * delta)
 	velocity += PUSH_FORCE * delta * soft_collision.get_push_dir()
 	move_and_slide(velocity)
+	update_potential_targets()
 
 
 func set_facing(dir: Vector2, delta: float) -> void:
 	sprite.rotation = lerp_angle(sprite.rotation, dir.angle() - PI / 2, ROTATE_SPEED * delta)
+
+
+func update_potential_targets() -> void:
+	for i in potential_targets:
+		vision_cast.cast_to = i.position - position
+		vision_cast.force_raycast_update()
+		if vision_cast.is_colliding():
+			targets.erase(i)
+			if target == i:
+				if targets.size() > 0:
+					set_target_to_closest()
+				else:
+					target = null
+		else:
+			targets[i] = 0
+			if targets.size() == 1:
+				set_target_to_closest()
+				update_target_timer.start()
 
 
 func set_target_to_closest() -> void:
@@ -48,19 +69,12 @@ func attack() -> void:
 
 
 func _on_Vision_body_entered(body: Node) -> void:
-	if targets.empty():
-		update_target_timer.start()
-		targets[body] = 0
-		set_target_to_closest()
-	else:
-		targets[body] = 0
+	potential_targets[body] = 0
 
 
 func _on_Vision_body_exited(body: Node) -> void:
+	potential_targets.erase(body)
 	targets.erase(body)
-	if targets.empty():
-		update_target_timer.stop()
-		target = null
 
 
 func _on_UpdateTargetTimer_timeout() -> void:
