@@ -26,6 +26,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+#	if not death_timer.is_stopped():
+#		return
 	is_pulling = Input.is_action_pressed("pull")
 	_set_line()
 
@@ -65,6 +67,8 @@ func _on_Player_died() -> void:
 	explosion.position = player.position
 	get_parent().add_child(explosion)
 	player.position = position
+	set_process(false)
+	is_pulling = false
 	line.hide()
 	if see_player:
 		death_timer.start()
@@ -74,3 +78,4 @@ func _on_DeathTimer_timeout() -> void:
 	player.position = position
 	player.respawn()
 	line.show()
+	set_process(true)
