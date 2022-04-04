@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const MAX_DIST : int = 200
 const MAX_DIST_SQR : int = MAX_DIST * MAX_DIST
-const MAX_SPEED : int = 400
+const MAX_SPEED : int = 420
 const ACCELERATION : int = 1000
 const MAX_KNOCKBACK : int = 5000
 
@@ -25,9 +25,7 @@ func _ready() -> void:
 	player.set_as_toplevel(true)
 
 
-func _process(delta: float) -> void:
-#	if not death_timer.is_stopped():
-#		return
+func _process(_delta: float) -> void:
 	is_pulling = Input.is_action_pressed("pull")
 	_set_line()
 
@@ -40,7 +38,7 @@ func _physics_process(delta: float) -> void:
 	if is_pulling:
 		desired_velocity = MAX_SPEED * position.direction_to(player.position)
 	velocity = velocity.move_toward(desired_velocity, ACCELERATION * delta)
-	move_and_slide(velocity)
+	velocity = move_and_slide(velocity)
 
 
 func hit(dmg: float, dir: Vector2 = Vector2()) -> void:

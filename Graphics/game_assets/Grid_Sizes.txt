@@ -1,4 +1,7 @@
 Grid sizes:
+   smallest size: 175px
+   largest size:  1400px
+
                    width x height
 ani_sprite_explode = 700 x 700px
 
@@ -6,3 +9,10 @@ tileset_floor = 350 x 350px
 
 tileset_wall = 350 x 700px
                175 x 700px (last two)
+
+tileset_obstacles = (in order)
+                    350 x 1400px (the lazer beam)
+                    350 x 700px (the two console desks)
+                    350 x 350px
+
+ani_earth_explode = 700 x 700px
