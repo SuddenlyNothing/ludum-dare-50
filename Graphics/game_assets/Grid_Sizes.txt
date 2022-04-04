@@ -16,3 +16,5 @@ tileset_obstacles = (in order)
                     350 x 350px
 
 ani_earth_explode = 700 x 700px
+
+sprite_spawn = 380 x 480px 
