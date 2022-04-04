@@ -11,6 +11,8 @@ tileset_wall = 350 x 700px
                175 x 700px (last two)
 
 tileset_obstacles = (in order)
-                    350 x 1400px
+                    350 x 1400px (the lazer beam)
                     350 x 700px (the two console desks)
                     350 x 350px
+
+ani_earth_explode = 700 x 700px
