@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 		set_facing(desired_velocity, delta)
 	velocity = velocity.move_toward(desired_velocity, ACCELERATION * delta)
 	velocity += PUSH_FORCE * delta * soft_collision.get_push_dir()
-	move_and_slide(velocity)
+	velocity = move_and_slide(velocity)
 	if do_update_target:
 		update_potential_targets()
 
