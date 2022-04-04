@@ -6,3 +6,6 @@ tileset_floor = 350 x 350px
 
 tileset_wall = 350 x 700px
                175 x 700px (last two)
+
+tileset_obstacles = 350 x 700px (the two console desks)
+                    350 x 350px
