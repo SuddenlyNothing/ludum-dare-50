@@ -1,8 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/characters/enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/SoftCollision.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/characters/angy.png" type="Texture" id=3]
+[ext_resource path="res://utils/MultiSFX.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/sfx/enemy_footstep_1.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/sfx/enemy_footstep_3.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sfx/enemy_footstep_2.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sfx/enemy_footstep_4.wav" type="AudioStream" id=8]
 
 [sub_resource type="CircleShape2D" id=4]
 radius = 12.0
@@ -29,9 +34,10 @@ collision_mask = 18
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Vision"]
 shape = SubResource( 2 )
+disabled = true
 
 [node name="UpdateTargetTimer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.2
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.1, 0.1 )
@@ -49,9 +55,16 @@ wait_time = 0.5
 
 [node name="VisionCast" type="RayCast2D" parent="."]
 
+[node name="StepSFX" parent="." instance=ExtResource( 4 )]
+sfx = [ ExtResource( 5 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 8 ) ]
+
+[node name="StepTimer" type="Timer" parent="."]
+wait_time = 0.3
+
 [connection signal="body_entered" from="Vision" to="." method="_on_Vision_body_entered"]
 [connection signal="body_exited" from="Vision" to="." method="_on_Vision_body_exited"]
 [connection signal="timeout" from="UpdateTargetTimer" to="." method="_on_UpdateTargetTimer_timeout"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
 [connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
+[connection signal="timeout" from="StepTimer" to="." method="_on_StepTimer_timeout"]

@@ -39,7 +39,7 @@ func _enter_state(new_state : String, old_state) -> void:
 		states.idle:
 			pass
 		states.walk:
-			pass
+			parent.start_step_timer()
 		states.death:
 			set_death(true)
 
@@ -51,7 +51,7 @@ func _exit_state(old_state, new_state : String) -> void:
 		states.idle:
 			pass
 		states.walk:
-			pass
+			parent.step_timer.stop()
 		states.death:
 			set_death(false)
 

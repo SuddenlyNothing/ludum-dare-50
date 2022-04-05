@@ -1,14 +1,36 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/characters/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/player/PlayerStates.gd" type="Script" id=2]
-[ext_resource path="res://assets/characters/player_img01.png" type="Texture" id=3]
+[ext_resource path="res://assets/player_spriteSheet.png" type="Texture" id=3]
+[ext_resource path="res://assets/sfx/footstep_2.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/sfx/footstep_3.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/sfx/footstep_4.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sfx/footstep_5.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sfx/footstep_6.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/sfx/footstep_7.wav" type="AudioStream" id=9]
+[ext_resource path="res://assets/sfx/footstep_8.wav" type="AudioStream" id=10]
+[ext_resource path="res://assets/sfx/footstep_1.wav" type="AudioStream" id=11]
+[ext_resource path="res://utils/MultiSFX.tscn" type="PackedScene" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 13, 12 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 16, 16 )
+extents = Vector2( 13, 12 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 318, 309 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -27,8 +49,22 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="StepSFX" parent="." instance=ExtResource( 12 )]
+sfx = [ ExtResource( 11 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ]
+
+[node name="StepTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="Listener2D" type="Listener2D" parent="."]
+current = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -1, -2 )
 scale = Vector2( 0.1, 0.1 )
-texture = ExtResource( 3 )
+frames = SubResource( 3 )
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="timeout" from="StepTimer" to="." method="_on_StepTimer_timeout"]

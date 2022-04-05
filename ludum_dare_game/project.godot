@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="ludum-dare-50-game"
-run/main_scene="res://scenes/Demo.tscn"
+run/main_scene="res://ui/Menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -43,6 +43,7 @@ Save="*res://auto_loads/Save.gd"
 ScreenFilter="*res://auto_loads/ScreenFilter.tscn"
 Variables="*res://auto_loads/Variables.gd"
 OptionsMenu="*res://options/OptionsMenu.tscn"
+MusicPlayer="*res://auto_loads/MusicPlayer.tscn"
 
 [display]
 

@@ -18,6 +18,14 @@ onready var update_target_timer := $UpdateTargetTimer
 onready var sprite := $Sprite
 onready var attack_timer := $AttackTimer
 onready var vision_cast := $VisionCast
+onready var step_sfx := $StepSFX
+onready var step_timer := $StepTimer
+onready var vision_collision := $Vision/CollisionShape2D
+
+
+func _ready() -> void:
+	if do_update_target:
+		vision_collision.call_deferred("set_disabled", false)
 
 
 func _physics_process(delta: float) -> void:
@@ -28,6 +36,12 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.move_toward(desired_velocity, ACCELERATION * delta)
 	velocity += PUSH_FORCE * delta * soft_collision.get_push_dir()
 	velocity = move_and_slide(velocity)
+	if velocity != Vector2():
+		if step_timer.is_stopped():
+			step_timer.start()
+	else:
+		if not step_timer.is_stopped():
+			step_timer.stop()
 	if do_update_target:
 		update_potential_targets()
 
@@ -47,6 +61,7 @@ func update_potential_targets() -> void:
 					set_target_to_closest()
 				else:
 					target = null
+					update_target_timer.stop()
 		else:
 			targets[i] = 0
 			if targets.size() == 1:
@@ -58,6 +73,8 @@ func set_target_to_closest() -> void:
 	var min_target : Node
 	var min_dist = null
 	for i in targets:
+		if not is_instance_valid(i):
+			continue
 		var new_dist := position.distance_squared_to(i.position)
 		if min_dist == null or new_dist < min_dist:
 			min_target = i
@@ -104,3 +121,8 @@ func _on_Hitbox_body_exited(body: Node) -> void:
 
 func _on_AttackTimer_timeout() -> void:
 	attack()
+
+
+func _on_StepTimer_timeout() -> void:
+	step_sfx.volume_db = linear2db(velocity.length() / MAX_SPEED)
+	step_sfx.play()

@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/characters/player/Explosion.gd" type="Script" id=1]
 [ext_resource path="res://assets/objects/anim_explodetest01.png" type="Texture" id=2]
+[ext_resource path="res://assets/sfx/Explosion.wav" type="AudioStream" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 47.0
+radius = 141.0
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
@@ -53,14 +54,18 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.4
 one_shot = true
 autostart = true
 
 [node name="ExplosionParticles" type="AnimatedSprite" parent="."]
-scale = Vector2( 0.1, 0.1 )
+scale = Vector2( 0.3, 0.3 )
 frames = SubResource( 8 )
 animation = "explode"
 
+[node name="ExplosionSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "SFX"
+
 [connection signal="body_entered" from="." to="." method="_on_Explosion_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="frame_changed" from="ExplosionParticles" to="." method="_on_ExplosionParticles_frame_changed"]
